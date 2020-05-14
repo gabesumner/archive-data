@@ -1,5 +1,16 @@
 <template>
     <div class="slds-card slds-p-around_medium" style="text-align:center;">
-        <lightning-button variant="brand" label="Archive Case" onclick={buttonClick} class="slds-p-around_medium"></lightning-button>
+        <template if:true={showArchive}>
+            <lightning-button variant="brand" label="Archive Case" onclick={archiveClick} class="slds-p-around_medium"></lightning-button>
+        </template>
+
+        <template if:true={showSuccess}>
+            <div class="slds-text-heading_small slds-p-bottom_small">Case archived and deleted!</div>
+            <div class="slds-text-body_regular slds-p-bottom_medium">To retrieve this case, navigate to the related Account or Contact record.</div>
+            <div>
+                <lightning-button label="View the Account" onclick={navigateToAccount} class="slds-p-around_xx-small"></lightning-button>
+                <lightning-button label="View the Contact" onclick={navigateToContact} class="slds-p-around_xx-small"></lightning-button>
+            </div>
+        </template>
     </div>
 </template>
