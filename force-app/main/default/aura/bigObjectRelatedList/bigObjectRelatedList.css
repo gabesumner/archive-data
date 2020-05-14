@@ -1,0 +1,8 @@
+.THIS .btn_next button {
+    min-width: 120px;
+}
+
+.THIS .input-group .lightningInput {
+    display: inline-block;
+    margin-right: 10px;
+}

@@ -1,0 +1,94 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" controller="BigObjectListView" access="global" >
+    
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="showSpinner" type="Boolean" default="false"/>
+    <aura:attribute name="objectname" type="String" default="Big_Object__b" access="global"/>
+    <aura:attribute name="objectdisplayname" type="String" default="Big_Object__b" access="global"/>
+    <aura:attribute name="lookupfield" type="String" default="Account__c" access="global"/>
+    <aura:attribute name="columnlist" type="String" default="Name__c" access="global"/>
+    <aura:attribute name="columnlabellist" type="String" default="Name" access="global"/>
+    <aura:attribute name="columndatatypelist" type="String" default="text" access="global"/>
+    <aura:attribute name="relatedListTitle" type="String" access="global"/>
+    <aura:attribute name="mydata" type="Object"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="nextRecordsUrl" type="String"/>
+    <aura:attribute name="sessionId" type="String"/>
+    <aura:attribute name="isDone" type="Boolean" default="false"/>
+    <aura:attribute name="pageNo" type="Integer" default="1"/>
+    <aura:attribute name="bigObjectRecordsMap" type="Map"/>
+    <aura:attribute name="iframeUrl" type="String"/>
+    <aura:attribute name="whereClause" type="String" default=""/>
+    <aura:attribute name="vfHost" type="String" default="salem-dx-hub.my.salesforce.com"/>
+    <aura:attribute name="navigationPage" type="Integer" default="1"/>
+    <aura:attribute name="whereClauseOn" type="String" default="Account_Id__c"/>
+    <aura:attribute name="selectedParentId" type="String"/>
+    <aura:attribute name="showActions" type="Boolean" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <force:recordData aura:id="contactRecord"
+                      recordId="{!v.recordId}"
+                      targetFields="{!v.Contact}"
+                      layoutType="FULL"
+                      />
+
+    <aura:if isTrue="{!v.showSpinner == true}">
+                <lightning:spinner alternativeText="Loading" size="medium" aura:id="spinner"/>
+    </aura:if>
+    <aura:if isTrue="{!v.navigationPage == 1}">
+        <lightning:card title="{!v.relatedListTitle}">
+            <aura:set attribute="footer">
+                <div style="text-align:center;">
+                    <div class="slds-clearfix">
+                        <div class="slds-float_left">
+                            <lightning:button label="Previous" title="Previous" disabled="{!v.pageNo == 1}" onclick="{! c.onClickPrevious }"/>
+                            <lightning:button label="Next" title="Next" disabled="{!v.isDone}" onclick="{! c.onClickNext }"/>
+                        </div>
+                        <div class="slds-float_right">
+                            Page No : {!v.pageNo}
+                        </div>
+                    </div>
+                </div>
+            </aura:set>
+            <div style="height: 300px">
+                <lightning:spinner alternativeText="Loading" size="medium" aura:id="spinner"/>
+                <lightning:datatable 
+                                     data="{!v.mydata}" 
+                                     onrowaction="{! c.handleRowAction }"
+                                     columns="{!v.mycolumns}" 
+                                     keyField="Account_Id__c" 
+                                     hideCheckboxColumn="true"/> 
+                <iframe aura:id="vfFrame" src="{!v.iframeUrl}" style="width:0px;height:0px;border:0px solid transparent;"/>
+            </div>
+        </lightning:card> 
+    </aura:if>
+    <aura:if isTrue="{!v.navigationPage == 2}">
+        <div class="slds-card">
+            <button class="slds-button slds-button_neutral" onclick="{!c.onClickBack}">Back</button>
+            <c:BigObjectListView  relatedListTitle="Contacts" 
+                                 objectname="Contact__b" 
+                                 objectdisplayname="Contact"
+                                 lookupfield=""
+                                 columnlist="Record_Id__c,Account_Id__c,Name__c"
+                                 columnlabellist="Id,Account Id,Name"
+                                 columndatatypelist="text"
+                                 showActions = "false"
+                                 whereClause="{!v.selectedParentId}"
+                                 />
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.navigationPage == 3}">
+        <div class="slds-card">
+            <button class="slds-button slds-button_neutral" onclick="{!c.onClickBack}">Back</button>
+            <c:BigObjectListView  relatedListTitle="Contacts" 
+                                 objectname="Case__b" 
+                                 objectdisplayname="Case"
+                                 showActions="false"
+                                 lookupfield=""
+                                 columnlist="Record_Id__c,Account_Id__c,Case_Number__c,Subject__c,Description__c,Status__c"
+                                 columnlabellist="Id,Account Id,Case Number,Subject,Description,Status"
+                                 columndatatypelist="text"
+                                 whereClause="{!v.selectedParentId}"
+                                 />
+        </div>
+    </aura:if>
+</aura:component>

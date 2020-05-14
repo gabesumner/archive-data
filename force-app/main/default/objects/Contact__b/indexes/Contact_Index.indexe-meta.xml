@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Index xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contact_Index</fullName>
+    <fields>
+        <name>Account_Id__c</name>
+        <sortDirection>ASC</sortDirection>
+    </fields>
+    <fields>
+        <name>Record_Id__c</name>
+        <sortDirection>ASC</sortDirection>
+    </fields>
+    <label>Contact Index</label>
+</Index>

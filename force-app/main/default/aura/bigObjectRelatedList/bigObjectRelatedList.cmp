@@ -1,0 +1,154 @@
+<aura:component controller="bigObjectsRelatedList" implements="flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    
+    <!-- attributes -->
+    
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="objectname" type="String" default="yourBigObject__b" access="global"/>
+    <aura:attribute name="objectdisplayname" type="String" default="Your Big Object" access="global"/>
+    <aura:attribute name="lookupfield" type="String" default="Account__c" access="global"/>
+    <aura:attribute name="columnlist" type="String" default="Name__c" access="global"/>
+    <aura:attribute name="columnlabellist" type="String" default="Name" access="global"/>
+    <aura:attribute name="columndatatypelist" type="String" default="text" access="global"/>
+    <aura:attribute name="mydata" type="Object"/>
+    <aura:attribute name="fullSet" type="Object"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="rowTripId" type="String"/>
+    <aura:attribute name="contactId" type="String"/>
+    <!--<aura:attribute name="newData" type="Ride__b"></aura:attribute>-->
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
+    <!-- the container element determine the height of the datatable -->
+    <div style="height: 300px">
+        <lightning:datatable
+                             columns="{! v.mycolumns }"
+                             data="{! v.mydata }"
+                             keyField="id"
+                             onrowaction="{! c.handleRowAction }"/>
+    </div>
+    
+    <div id="EditorModal" style="display:none">
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                            <lightning:icon iconName="custom:custom20" size="small"></lightning:icon>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Editor</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <form class="slds-form--compound">
+                            <div class="form-element__group">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-size--1-of-2">
+                                        <label class="slds-form-element__label" for="name">Contact</label>
+                                        <div class="slds-form-element__control">
+                                           <input id="ContactLookup__c" class="slds-input" type="text" html-disabled="true" value="{!v.newData[0].ContactLookup__c}"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                            <div class="form-element__group">
+                                <div class="slds-form-element__row">
+
+                                    <div class="slds-form-element slds-size--1-of-2">
+                                        <label class="slds-form-element__label" for="email">From Station Id</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="From_Station_Id__c" class="slds-input" type="text" value="{!v.newData[0].From_Station_Id__c}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-element__group">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-size--1-of-2">
+                                        <label class="slds-form-element__label" for="name">From Station Name</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="From_Station_Name__c" class="slds-input" type="text" value="{!v.newData[0].From_Station_Name__c}" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                            <div class="form-element__group">
+                                <div class="slds-form-element__row">
+                                    
+                                    <div class="slds-form-element slds-size--1-of-2">
+                                        <label class="slds-form-element__label" for="name">Id</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="Id" class="slds-input" type="text" value="{!v.newData[0].Id}"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-element__group">
+                                <div class="slds-form-element__row">
+                                    
+                                    
+                                    <div class="slds-form-element slds-size--1-of-2">
+                                        <label class="slds-form-element__label" for="name">Start Time</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="Start_Time__c" class="slds-input" type="text" value="{!v.newData[0].Start_Time__c}"/>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-size--1-of-2">
+                                        <label class="slds-form-element__label" for="email">Stop Time</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="Stop_Time__c" class="slds-input" type="text" value="{!v.newData[0].Stop_Time__c}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                           
+                            
+                            <div class="form-element__group">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-size--1-of-2">
+                                        <label class="slds-form-element__label" for="name">Trip Id</label>
+                                        <div class="slds-form-element__control">
+                                            <input id="Trip_Id__c" class="slds-input" type="text" html-disabled="true" value="{!v.newData[0].Trip_Id__c}"/>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-size--1-of-2">
+                                        <label class="slds-form-element__label" for="email">User Type</label>
+                                        <!--<div class="slds-form-element__control">
+                                            <input id="User_Type__c" class="slds-input" type="text" value="{!v.newData[0].User_Type__c}"/>
+                                        </div>--> 
+                                    </div>
+                                </div>
+                            </div>
+                            
+                           
+                            
+                            <pre></pre>
+                            <pre></pre>
+                                                       <!--<button onclick="{!c.saveData}" class="slds-button slds-button_brand">Save</button>-->                            
+
+                        </form>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <div class="slds-form-element">
+                            <button onclick="{!c.closeEditor}" class="slds-button slds-button_neutral">Cancel</button>
+                            <button onclick="{!c.saveData}" class="slds-button slds-button_brand">Save</button>                           
+                        </div>
+                    </footer>
+                    
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+        
+        <!--<aura:iteration var="orderData" items="{!v.newData}">
+            <p>{!orderData.Trip_Id__c}</p>
+        </aura:iteration>--> 
+    </div>
+    
+</aura:component>
