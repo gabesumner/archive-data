@@ -1,8 +1,0 @@
-<aura:component controller="archiveController" implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-
-    <div class="slds-card" style="width:100%;text-align:center;">
-        <lightning:spinner alternativeText="Loading" size="medium" />
-        <div class="slds-text-heading_medium" style="margin-top:75px;">Archiving Account &amp; related Cases &amp; Contacts</div>
-    </div>
-</aura:component>

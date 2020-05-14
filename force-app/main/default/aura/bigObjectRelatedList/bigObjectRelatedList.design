@@ -1,8 +1,0 @@
-<design:component >
-	<design:attribute name="objectname" label="Big Object API Name" description="Please input the API name of the big object where you intend to add this component to the page layout such as JacksCustomBigObject__b.  The underscore underscore B is important." />
-	<design:attribute name="objectdisplayname" label="Big Object Display Name" description="Please input the display name of the big object where you intend to add this component to the page layout such as Jacks Custom Big Object." />
-	<design:attribute name="lookupfield" label="API Name of Relationship Field" description="Please input the name of the field on your Big Object which holds the ID.  We will look at this field for all records where the value matches the record ID of the current page you drop this component on" />
-	<design:attribute name="columnlist" label="Column API Name List" description="Please input a comma separated list of the API names of the columns you would like to display in the component such as Name__c, BODate__c." />
-	<design:attribute name="columnlabellist" label="Column Label Name List" description="Please input a comma separated list of the display names of the columns you would like to display in the component such as Name, Date Created." />
-	<design:attribute name="columndatatypelist" label="Column Data Type Name List" description="Please input a comma separated list the datatypes of your fields as outlined in the lightning:datatable documentation" />
-</design:component>
