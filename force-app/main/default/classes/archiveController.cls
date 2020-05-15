@@ -41,7 +41,7 @@ public with sharing class archiveController {
     }
 
     @AuraEnabled
-    public static String archiveCase(String recordId) {
+    public static void archiveCase(String recordId) {
         Case caseS = [
             SELECT 
             Id,
@@ -84,9 +84,7 @@ public with sharing class archiveController {
         caseB.Contact_Name__c = caseS.Contact.Name;
         Database.SaveResult result = Database.insertImmediate(caseB);
 
-        //delete caseS;
-
-        return Id.valueOf(result.getId());
+        delete caseS;
     }
 
     @AuraEnabled(cacheable=true)
