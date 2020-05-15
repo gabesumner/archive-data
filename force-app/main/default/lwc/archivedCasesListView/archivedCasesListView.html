@@ -49,11 +49,19 @@
                         </dl>
                         <dl class="slds-list_horizontal slds-wrap slds-form-element_readonly slds-p-around_xx-small">
                             <dt class="slds-item_label slds-truncate" title="Subject">Created Date:</dt>
-                            <dd class="slds-item_detail slds-truncate">{archivedCase.CreatedDate__c}</dd>
+                            <dd class="slds-item_detail slds-truncate"><lightning-formatted-date-time value={archivedCase.CreatedDate__c}></lightning-formatted-date-time></dd>
                         </dl>
                         <dl class="slds-list_horizontal slds-wrap slds-form-element_readonly slds-p-around_xx-small">
                             <dt class="slds-item_label slds-truncate" title="Subject">Closed Date:</dt>
-                            <dd class="slds-item_detail slds-truncate">{archivedCase.ClosedDate__c}</dd>
+                            <dd class="slds-item_detail slds-truncate"><lightning-formatted-date-time value={archivedCase.ClosedDate__c}></lightning-formatted-date-time></dd>
+                        </dl>
+                        <dl class="slds-list_horizontal slds-wrap slds-form-element_readonly slds-p-around_xx-small">
+                            <dt class="slds-item_label slds-truncate" title="Subject">Account Name:</dt>
+                            <dd class="slds-item_detail slds-truncate">{archivedCase.Account_Name__c}</dd>
+                        </dl>
+                        <dl class="slds-list_horizontal slds-wrap slds-form-element_readonly slds-p-around_xx-small">
+                            <dt class="slds-item_label slds-truncate" title="Subject">Contact Name:</dt>
+                            <dd class="slds-item_detail slds-truncate">{archivedCase.Contact_Name__c}</dd>
                         </dl>
                         <dl class="slds-list_horizontal slds-wrap slds-form-element_readonly slds-p-around_xx-small">
                             <dt class="slds-item_label slds-truncate" title="Subject">Subject:</dt>

@@ -65,33 +65,64 @@ public with sharing class archiveController {
             FROM Case WHERE Id = :recordId
         ];
 
-        Case__b caseB = new Case__b();
-        caseB.Record_Id__c = caseS.Id;
-        caseB.Case_Number__c = caseS.CaseNumber;
-        caseB.Account_Id__c = caseS.AccountId;
-        caseB.Contact_Id__c = caseS.ContactId;
-        caseB.CreatedDate__c = caseS.CreatedDate;
-        caseB.LastModifiedDate__c = caseS.LastModifiedDate;
-        caseB.ClosedDate__c = caseS.ClosedDate;
-        caseB.Origin__c = caseS.Origin;
-        caseB.Priority__c = caseS.Priority;
-        caseB.Type__c = caseS.Type;
-        caseB.Reason__c = caseS.Reason;
-        caseB.Status__c = caseS.Status;
-        caseB.Subject__c = caseS.Subject;
-        caseB.Description__c = caseS.Description;
-        caseB.Account_Name__c = caseS.Account.Name;
-        caseB.Contact_Name__c = caseS.Contact.Name;
+        Case__b caseB = convertCaseToBigObject(caseS);
         Database.SaveResult result = Database.insertImmediate(caseB);
 
         delete caseS;
     }
 
+    @AuraEnabled
+    public static Boolean archiveCases(String archiveDate) {
+        Boolean finished = true;
+        System.debug('archiveDate: ' + archiveDate);
+        Date parsedDate = Date.valueOf(archiveDate);
+        System.debug('parsedDate: ' + parsedDate.format());
+
+        List<Case> casesS = [
+            SELECT
+            Id,
+            ContactId,
+            AccountId,
+            CaseNumber,
+            CreatedDate,
+            LastModifiedDate,
+            ClosedDate,
+            Origin,
+            Priority,
+            Type,
+            Reason,
+            Status,
+            Subject,
+            Description,
+            Account.Name,
+            Contact.Name,
+            Contact.FirstName,
+            Contact.LastName
+            FROM Case 
+            WHERE ClosedDate < :parsedDate AND Status = 'Closed'
+            LIMIT 1000
+        ];
+        System.debug('Case Count: ' + casesS.size());
+
+        List<Case__b> casesB = new List<Case__b>();
+        for (Case caseS : casesS) {
+            casesB.add(convertCaseToBigObject(caseS));
+        }
+
+        Database.insertImmediate(casesB);
+
+        // If we retrieved our limit of Cases then it means where are more to delete.
+        if (casesS.size() == 1000) {
+            finished = false;
+        }
+
+        delete casesS;
+
+        return finished;
+    }
+
     @AuraEnabled(cacheable=true)
     public static List<Case__b> getArchivedCases(String accountId, String contactId) {
-        system.debug('accountId: ' + accountId);
-        system.debug('contactId: ' + contactId);
-
         // If we have a Contact ID, but not the parent Account ID, then retrieve it.
         if (String.isBlank(accountId) == true && String.isBlank(contactId) == false) {
             Contact contact = [SELECT AccountId FROM Contact WHERE id = :contactId];
@@ -117,18 +148,20 @@ public with sharing class archiveController {
                 query = query + ', ';
             }
         }
-        System.debug(query);
 
         query = query + ' FROM Case__b';
-        System.debug(query);
 
+        // Filter by Account ID if available.
         if (String.isBlank(accountId) == false) {
             query = query + ' WHERE Account_Id__c = :accountId';
         }
+
+        // Also filter by Contact ID if available.
         if (String.isBlank(contactId) == false) {
             query = query + ' AND Contact_Id__c = :contactId';
         }
-        System.debug(query);
+
+        query = query + ' LIMIT 30';
 
         cases = Database.query(query);
         return cases;
@@ -159,6 +192,27 @@ public with sharing class archiveController {
             AND Contact_Id__c = :contactId
             AND Record_Id__c = :recordId
         ];
+        return caseB;
+    }
+
+    private static Case__b convertCaseToBigObject(Case caseS) {
+        Case__b caseB = new Case__b();
+        caseB.Record_Id__c = caseS.Id;
+        caseB.Case_Number__c = caseS.CaseNumber;
+        caseB.Account_Id__c = caseS.AccountId;
+        caseB.Contact_Id__c = caseS.ContactId;
+        caseB.CreatedDate__c = caseS.CreatedDate;
+        caseB.LastModifiedDate__c = caseS.LastModifiedDate;
+        caseB.ClosedDate__c = caseS.ClosedDate;
+        caseB.Origin__c = caseS.Origin;
+        caseB.Priority__c = caseS.Priority;
+        caseB.Type__c = caseS.Type;
+        caseB.Reason__c = caseS.Reason;
+        caseB.Status__c = caseS.Status;
+        caseB.Subject__c = caseS.Subject;
+        caseB.Description__c = caseS.Description;
+        caseB.Account_Name__c = caseS.Account.Name;
+        caseB.Contact_Name__c = caseS.Contact.Name;
         return caseB;
     }
 }

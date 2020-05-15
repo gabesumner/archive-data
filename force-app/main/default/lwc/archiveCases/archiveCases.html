@@ -1,0 +1,10 @@
+<template>
+    <div class="slds-card slds-p-around_small">
+        <div style="display: inline-block">
+            <lightning-input type="date" label="Archive all closed cases prior to:" value={archiveDate} onchange={handleArchiveDate}></lightning-input>
+        </div>
+        <div style="display: inline-block">
+            <lightning-button label="Archive Cases" onclick={archiveCases} class="slds-p-around_xx-small"></lightning-button>
+        </div>
+    </div>
+</template>
