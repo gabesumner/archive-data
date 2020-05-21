@@ -11,6 +11,9 @@
     <label>Archive</label>
     <navType>Standard</navType>
     <tabs>Archived_Cases</tabs>
+    <tabs>Report_Item__c</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <tabs>standard-report</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Archive_UtilityBar</utilityBar>
 </CustomApplication>

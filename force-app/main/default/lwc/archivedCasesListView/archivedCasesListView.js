@@ -2,6 +2,7 @@ import { LightningElement, wire, api } from 'lwc';
 import getArchivedCases from '@salesforce/apex/archiveController.getArchivedCases';
 import getArchivedCase from '@salesforce/apex/archiveController.getArchivedCase';
 import { getRecord } from 'lightning/uiRecordApi';
+import { refreshApex } from '@salesforce/apex';
 
 const columns = [
     {
@@ -24,17 +25,20 @@ const columns = [
 
 export default class ArchiveCaseListView extends LightningElement {
     @api recordId;
-    @api mode;
+    @api mode = "All Archived Cases";
+    @api hideHeader = false;
     columns = columns;
     archivedCases;
     archivedCase;
     rowOffset = 0;
     showModal = false;
+    showNoResults = false;
+    showDataTable = false;
     accountId = '';
     contactId = '';
     
-    connectedCallback() {
-        console.log('connectedCallback: ' + this.mode);
+    @api refresh() {
+        console.log('Refresh - ' + this.mode);
         switch(this.mode) {
             case 'All Archived Cases':
                 this.getArchivedCases();
@@ -45,7 +49,19 @@ export default class ArchiveCaseListView extends LightningElement {
             case 'Archived Cases for Current Contact':
                 this.getArchivedCasesForContactRecord();
                 break;
+        }    }
+
+    get showHeader() {
+        if (this.hideHeader == true) {
+            return false;
+        } else {
+            return true;
         }
+    }
+
+    connectedCallback() {
+        console.log('connectedCallback: ' + this.mode);
+        this.refresh();
     }
 
     getArchivedCases() {
@@ -58,6 +74,7 @@ export default class ArchiveCaseListView extends LightningElement {
         .then(result => {
             console.log('Result: ' + JSON.stringify(result));
             this.archivedCases = result;
+            this.showResults();
         })
         .catch(error => {
             console.log('ERROR: ' + JSON.stringify(error));
@@ -92,6 +109,14 @@ export default class ArchiveCaseListView extends LightningElement {
         .catch(error => {
             console.log('ERROR: ' + JSON.stringify(error));
         });
+    }
+
+    showResults() {
+        if (this.archivedCases.length > 0) {
+            this.showDataTable = true;
+        } else {
+            this.showNoResults = true;
+        }
     }
 
     closeModal() {

@@ -1,0 +1,21 @@
+.dataTableWrapper {
+    background-color: white;
+}
+
+h2 {
+    padding-left: 0.75rem;
+    font-weight: 300;
+    font-size: 1.25rem;
+    color: rgb(8, 7, 7);
+}
+
+textarea {
+    width: 100%;
+    min-height: 200px;
+    background-color: #F9F9F9;
+    font-family: monospace;
+}
+
+.generateReportLog {
+    color: red;
+}

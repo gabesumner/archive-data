@@ -1,14 +1,21 @@
 <template>
-    <div class="slds-p-bottom_large">
-        <lightning-datatable 
-            key-field="id"
-            data={archivedCases}
-            onrowaction={handleRowAction}
-            row-number-offset={rowOffset}
-            hide-checkbox-column="true"
-            columns={columns}>
-        </lightning-datatable>
-    </div>
+
+    <template if:true={showDataTable}>
+        <div class="slds-p-bottom_large">
+            <lightning-datatable 
+                key-field="id"
+                data={archivedCases}
+                onrowaction={handleRowAction}
+                row-number-offset={rowOffset}
+                hide-checkbox-column="true"
+                columns={columns}>
+            </lightning-datatable>
+        </div>
+    </template>
+
+    <template if:true={showNoResults}>
+        <div class="slds-p-around_large" style="text-align: center;">No archived cases found.</div>
+    </template>
 
     <template if:true={showModal}>
         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">

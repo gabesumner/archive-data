@@ -74,8 +74,7 @@ public with sharing class archiveController {
     @AuraEnabled
     public static Boolean archiveCases(String archiveDate) {
         Boolean finished = true;
-        System.debug('archiveDate: ' + archiveDate);
-        Date parsedDate = Date.valueOf(archiveDate);
+        DateTime parsedDate = DateTime.valueOf(archiveDate);
         System.debug('parsedDate: ' + parsedDate.format());
 
         List<Case> casesS = [
@@ -99,10 +98,9 @@ public with sharing class archiveController {
             Contact.FirstName,
             Contact.LastName
             FROM Case 
-            WHERE ClosedDate < :parsedDate AND Status = 'Closed'
+            WHERE CreatedDate < :parsedDate
             LIMIT 1000
         ];
-        System.debug('Case Count: ' + casesS.size());
 
         List<Case__b> casesB = new List<Case__b>();
         for (Case caseS : casesS) {
@@ -121,7 +119,7 @@ public with sharing class archiveController {
         return finished;
     }
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<Case__b> getArchivedCases(String accountId, String contactId) {
         // If we have a Contact ID, but not the parent Account ID, then retrieve it.
         if (String.isBlank(accountId) == true && String.isBlank(contactId) == false) {
@@ -193,6 +191,43 @@ public with sharing class archiveController {
             AND Record_Id__c = :recordId
         ];
         return caseB;
+    }
+
+    public static String generateArchivedCasesReport(){
+        String query =
+        '{' +
+        '  "query": "SELECT count(Record_Id__c) recordCount, calendar_year(CreatedDate__c) createdYear, calendar_month(CreatedDate__c) createdMonth FROM Case__b GROUP BY calendar_year(CreatedDate__c), calendar_month(CreatedDate__c)",' +
+        '  "operation": "insert",' +
+        '  "targetObject": "Report_Item__c", ' +
+        '  "targetFieldMap": {' +
+        '    "recordCount": "Value__c",'  +
+        '    "createdYear": "Year__c",' +        
+        '    "createdMonth": "Month__c"' +
+        '  },' +
+        '  "targetValueMap": {' +
+        '    "$JOB_ID": "BackgroundOperationLookup__c",' +
+        '    "Yearly Total": "Category__c"' +
+        '  }' + 
+        '}';
+
+        System.debug(query);
+        
+        HttpRequest req = new HttpRequest();
+        HttpResponse res = new HttpResponse();
+        Http http = new Http();
+        
+        System.debug('getSalesforceBaseUrl:' + URL.getSalesforceBaseUrl().toExternalForm());
+        System.debug('getSessionId: ' + UserInfo.getSessionId());
+
+        req.setEndpoint(URL.getSalesforceBaseUrl().toExternalForm() + '/services/data/v48.0/async-queries');
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/json; charset=utf-8');
+        req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionID());
+        req.setBody(query);
+        
+        res = http.send(req);
+        String rBody = res.getBody();
+        return rBody;
     }
 
     private static Case__b convertCaseToBigObject(Case caseS) {

@@ -1,7 +1,7 @@
 {
   "orgName": "Archive Data",
   "edition": "Developer",
-  "features": [],
+  "features": ["FieldAuditTrail"],
   "settings": {
     "pathAssistantSettings": {
       "pathAssistantEnabled": true

@@ -1,0 +1,13 @@
+{
+    "query": "SELECT count(Record_Id__c) recordCount, CALENDAR_YEAR(CreatedDate__c) createdYear FROM Case__b GROUP BY CALENDAR_YEAR(CreatedDate__c)",
+    "operation": "insert",
+    "targetObject": "Report_Item__c",
+    "targetFieldMap": {
+       "recordCount": "Value__c",
+       "createdYear": "Year__c"
+    },
+    "targetValueMap": {
+       "$JOB_ID": "BackgroundOperationLookup__c",
+       "Yearly Total": "Category__c"
+    }
+ }

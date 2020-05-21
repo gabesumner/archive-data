@@ -1,0 +1,77 @@
+<template>
+    <header class="flexipageHeader slds-page-header uiBlock oneAnchorHeader">
+        <div class="bLeft">
+            <div class="small forceEntityIcon" style="background-color: #b070e6">
+                <span class="uiImage">
+                    <img src="/img/icon/t4v35/custom/custom23_120.png" class="icon">
+                </span>
+            </div>
+        </div>
+        <div class="bRight">
+            <lightning-button label="Refresh" onclick={refresh} class="slds-p-around_xxx-small"></lightning-button>
+            <lightning-button label="Archive Cases" onclick={openArchiveCases} class="slds-p-around_xxx-small"></lightning-button>
+        </div>
+        <div class="bBody">
+            <h2 class="truncate">Archived Cases</h2>
+        </div>
+    </header>
+
+    <div class="dataTableWrapper slds-p-around_medium slds-p-bottom_large">
+        <c-archived-cases-list-view mode="All Archived Cases" class="archivedCasesListView"></c-archived-cases-list-view>
+    </div>
+
+    <template if:true={showArchiveCases}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeArchiveCases}>
+                        <lightning-icon icon-name="utility:close" size="medium">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">Archive Cases</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={showArchiveCasesForm}>
+                        <lightning-input type="date" label="Archive all cases prior to:" value={archiveDate} onchange={handleArchiveDate}></lightning-input>
+                    </template>
+                    <template if:true={showLog}>
+                        <textarea class="archiveCasesLog">{log}</textarea>
+                    </template>
+                </div>
+                <footer class="slds-modal__footer">
+                    <template if:true={showArchiveCasesForm}>
+                        <lightning-button label="Archive Cases" onclick={archiveCases} class="slds-p-around_xx-small"></lightning-button>
+                    </template>
+                    <template if:true={showLog}>
+                        <lightning-button label="Close" variant="neutral" onclick={closeArchiveCases}></lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </template>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showGenerateReport}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeArchiveCases}>
+                        <lightning-icon icon-name="utility:close" size="medium">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">Generate Report</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <textarea data-id="generateReportLog">{log}</textarea>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" variant="neutral" onclick={closeArchiveCases}></lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>    
+
+</template>

@@ -5,13 +5,14 @@
         <backgroundColor2>#FFFFFF</backgroundColor2>
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
+            <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>RowCount</column>
+            <column>Report_Item__c.Value__c</column>
         </chartSummaries>
         <chartType>VerticalColumn</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>CREATED_DATE</groupingColumn>
+        <groupingColumn>Report_Item__c.Date__c</groupingColumn>
         <location>CHART_BOTTOM</location>
         <showAxisLabels>true</showAxisLabels>
         <showPercentage>false</showPercentage>
@@ -25,45 +26,39 @@
         <titleSize>18</titleSize>
     </chart>
     <columns>
-        <field>OWNER</field>
+        <field>CUST_NAME</field>
     </columns>
     <columns>
-        <field>ACCOUNT.NAME</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Report_Item__c.Value__c</field>
     </columns>
-    <columns>
-        <field>SUBJECT</field>
-    </columns>
-    <columns>
-        <field>AGE</field>
-    </columns>
-    <columns>
-        <field>OPEN</field>
-    </columns>
-    <columns>
-        <field>CLOSED</field>
-    </columns>
+    <filter>
+        <criteriaItems>
+            <column>Report_Item__c.Date__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>lessThan</operator>
+            <value>THIS_YEAR</value>
+        </criteriaItems>
+    </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Year</dateGranularity>
-        <field>CREATED_DATE</field>
+        <field>Report_Item__c.Date__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Active Case Trends</name>
-    <params>
-        <name>units</name>
-        <value>d</value>
-    </params>
+    <name>Archived Case Trends</name>
     <params>
         <name>co</name>
-        <value>1</value>
+        <value>0</value>
     </params>
-    <reportType>CaseList</reportType>
+    <reportType>CustomEntity$Report_Item__c</reportType>
     <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
-        <dateColumn>CREATED_DATEONLY</dateColumn>
+        <dateColumn>Report_Item__c.Date__c</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>

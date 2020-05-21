@@ -2,6 +2,9 @@
 #sfdx shane:org:create -f config/project-scratch-def.json -d 30 -s --wait 60 --userprefix admin -o archive.demo
 sfdx force:org:create -f config/project-scratch-def.json --setalias archive-data --setdefaultusername
 
+# Push the security settings first, otherwise the push will fail.
+sfdx force:source:deploy -m Settings:Security
+
 # Push the metadata into the new scratch org.
 sfdx force:source:push
 
@@ -15,4 +18,4 @@ sfdx shane:user:password:set -g User -l User -p salesforce1
 sfdx force:org:open
 
 # Import the data required by the demo
-sfdx automig:load --inputdir ./data
+sfdx automig:load --inputdir ./data --deletebeforeload
