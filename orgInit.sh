@@ -17,5 +17,8 @@ sfdx shane:user:password:set -g User -l User -p salesforce1
 # Open the org.
 sfdx force:org:open
 
+# Update the dates in our demo data relative to the original data generation date.
+sfdx shane:data:dates:update -r 5-20-2020
+
 # Import the data required by the demo
 sfdx automig:load --inputdir ./data --deletebeforeload
