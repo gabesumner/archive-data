@@ -35,4 +35,4 @@ cd prediction-builder
   sh orgInit.sh
   ```
 
-5. Check out the demo guide on [PlatformDemos.com](https://www.platformdemos.com) for the Prediction Builder demo.
+5. Check out the demo guide on [PlatformDemos.com](https://www.platformdemos.com) for the Archive Data Solution demo.
