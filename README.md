@@ -19,8 +19,8 @@ ___
 2. Clone this repository:
 
 ```
-git clone https://github.com/gabesumner/prediction-builder
-cd prediction-builder
+git clone https://github.com/gabesumner/archive-data
+cd archive-data
 ```
 
 3. Install **shane-sfdx-plugins** (if you don't already have it)
