@@ -29,10 +29,17 @@ cd archive-data
   sfdx plugins:install shane-sfdx-plugins
   ```
 
-4. Run the startup script
+
+4. Install **sfdx-migration-automatic** (if you don't already have it)
+
+  ```
+  sfdx plugins:install sfdx-migration-automatic
+  ```
+
+5. Run the startup script
 
   ```
   sh orgInit.sh
   ```
 
-5. Check out the demo guide on [PlatformDemos.com](https://www.platformdemos.com) for the Archive Data Solution demo.
+6. Check out the demo guide on [PlatformDemos.com](https://www.platformdemos.com) for the Archive Data Solution demo.
